@@ -22,8 +22,9 @@ export default{
 </script>
 
 <style>
+@import url("../static/icon/iconfont.css");
 @import url("../static/common.css");
 .view{
-  padding-top: 60px;
+  padding-top: 50px;
 }
 </style>

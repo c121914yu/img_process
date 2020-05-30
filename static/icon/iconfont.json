@@ -1,0 +1,37 @@
+{
+  "id": "1631226",
+  "name": "图像分析",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6317684",
+      "name": "复制",
+      "font_class": "fuzhi",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "8581711",
+      "name": "色板",
+      "font_class": "seban",
+      "unicode": "e658",
+      "unicode_decimal": 58968
+    },
+    {
+      "icon_id": "8691953",
+      "name": "提取",
+      "font_class": "tiqu",
+      "unicode": "e6fd",
+      "unicode_decimal": 59133
+    },
+    {
+      "icon_id": "11380889",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    }
+  ]
+}

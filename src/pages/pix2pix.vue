@@ -620,7 +620,7 @@ export default{
 }
 .pix2pix .right .upfile .btns .btn p{
   font-size: 0.8rem;
-  color: var(--font-dark-remark);
+  color: var(--dark-remark);
 }
 .pix2pix .right .upfile .btns .btn input{
   padding: 5px 10px;
@@ -661,7 +661,7 @@ export default{
 }
 .pix2pix .right .rgba-param .remark{
   font-size: 0.8rem;
-  color: var(--font-dark-remark);
+  color: var(--dark-remark);
 }
 
 .pix2pix .right .rgba-param .param-btns .btn{
