@@ -1,5 +1,5 @@
 <template>
-  <div class="nav">
+  <div class="nav" style="opacity: 1;">
     <router-link
       class="nav-item"
       :class="current === index?'active':''"
@@ -37,8 +37,16 @@ export default{
       }
     }
   },
-  mounted() {
+  created() {
     this.routeChange()
+		// window.onscroll = (e) => {
+		// 	console.log(11)
+		//   let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+		//   if(scrollTop > 80)
+		//     document.querySelector('.nav').style.opacity = 0.5
+		//   else
+		//     document.querySelector('.nav').style.opacity = 1
+		// }
   }
 }
 </script>

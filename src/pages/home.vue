@@ -66,17 +66,6 @@ export default{
 				temp = 0
 			this.currentCard = temp
 		}
-	},
-	mounted() {
-		const head = document.querySelector('.head')
-		const functions = document.querySelectorAll('.function')
-		setTimeout(() => {
-			head.style.opacity = 1
-			functions[0].style.left = 0
-			functions[0].style.opacity = 1
-			functions[1].style.right = 0
-			functions[1].style.opacity = 1
-		})
 	}
 }
 </script>
@@ -167,11 +156,11 @@ export default{
 .home>header{
 	padding: 10px 0;
 	border-bottom: var(--border1);
-	color: var(--dark-remark);
 }
 .home>header h1{
 	max-width: 1000px;
 	margin: 0 auto;
+	color: var(--dark-remark);
 }
 
 .home .body{
@@ -191,11 +180,11 @@ export default{
 	color: #FFFFFF;
 }
 .home .body .left .card.blue{
-	border-color: rgba(109,200,236,0.5);
+	border-color: #c6e2ff;
 }
 .home .body .left .card.blue h3{
-	color: rgba(109,200,236,1);
-	background-color: rgba(109,200,236,0.2);
+	color: var(--blue);
+	background-color: #ecf5ff;
 }
 .home .body .left .card.green{
 	border-color: rgba(90,216,166,0.5);

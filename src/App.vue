@@ -9,6 +9,7 @@
 
 <script>
 import Nav from './components/Nav.vue'
+global.color_img_url = ""
 global.message = (that,text) => {
   that.$alert(text, {
     confirmButtonText: '确定'

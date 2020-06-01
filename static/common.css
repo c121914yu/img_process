@@ -12,7 +12,7 @@
    border-radius:10px;
  }
 :root{
-  --font-dark1 : #262626;
+  --dark1 : #262626;
   --dark-common : #333;
   --dark-remark : #909399;
   --tint-gray : #d9d9d9;
@@ -22,6 +22,7 @@
   --green1 : #5ad8a6;
   --green2 : #3eaf7c;
 	--gray: #5d7092;
+	--blue: #409EFF;
 	--hover-speed: 0.4s ease-in-out;
   --transition-speed: 0.8s ease-in-out;
   ::-webkit-input-placeholder{
@@ -40,7 +41,6 @@
   font-weight: 400;
   letter-spacing: 1px;
   scroll-behavior:smooth;
-	overflow-x: hidden;
 }
 body{
 	padding: 0;
@@ -52,11 +52,13 @@ h1{
   font-size: 2em;
   font-weight: 600;
   letter-spacing: 2px;
+	color: var(--dark1);
 }
 h2{
   font-size: 1.6em;
   font-weight: 600;
   letter-spacing: 2px;
+	color: var(--dark1);
 }
 h3{
   font-size: 1.4em;
@@ -84,7 +86,15 @@ input::-webkit-input-placeholder {
    opacity:0.5;
 }
 input:focus{
-  border-color: var(--green1);
+  border-color: #3a8ee6;
+}
+input[type="file"]{
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	cursor: pointer;
+	z-index: 5;
 }
 
 .center{
@@ -99,25 +109,8 @@ input:focus{
   padding: 10px;
   border-left: 5px solid var(--green1);
 }
-.blockquote ol{
-  margin-left: 20px;
-}
 ol li{
   line-height: 2;
-}
-
-.catalog p{
-  margin: 10px 0;
-  padding-left: 30px;
-  border-radius: 10px;
-  line-height: 2.5;
-  color: var(--dark-common);
-}
-.catalog p:hover{
-  background-color: var(--green1);
-}
-.catalog p:hover a{
-  color: #FFFFFF;
 }
 
 table
@@ -128,7 +121,7 @@ table
   text-align: center;
   white-space: nowrap;
 }
-table td,.md table th
+table td,table th
 {
   border: 1px solid #cad9ea;
   color: #666;

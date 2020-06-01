@@ -8,12 +8,7 @@
       @closeRead="closeRead"
     >
     </readImgs>
-    <div class="catalog">
-      <h2>图像提取</h2>
-      <p class="navs"><a href="#1">系统介绍</a></p>
-      <p class="navs"><a href="#2">效果演示</a></p>
-      <p class="navs"><a href="#3">在线测试</a></p>
-    </div>
+    <catalogue title="图像提取" :list="catalogue_list"></catalogue>
     <div class="right">
       <h1>图像提取</h1>
       
@@ -61,7 +56,7 @@
           <div class="btns">
             <label class="check">
               <p class="btn">添加图片</p>
-              <input type="file" id="checkFile" @change="checkImgs" multiple>
+              <input type="file" @change="checkImgs" multiple>
             </label>
             <el-button class="btn" @click="clearFiles">重置</el-button>
             <el-button class="btn" @click="run">运行</el-button>
@@ -73,7 +68,6 @@
             class="item"
             v-for="(item,index) in resImgs"
             :key="index"
-            @click="read(1,index)"
           >
             <el-image
               class="img"
@@ -81,6 +75,11 @@
               :src="item"
               fit="scale-down"/>
             <p class="label">{{resLabel[index]}}</p>
+						<div class="mask">
+							<i class="el-icon-view" @click="read(1,index)"></i>
+							<i class="iconfont icon-seban" @click="to_pix2pix(item)"></i>
+							<i class="el-icon-download" @click="downLoadImg(item)"></i>
+						</div>
           </div>
         </div>
       </div>
@@ -91,12 +90,14 @@
 <script>
  import loading from '../components/loading'
  import readImgs from '../components/readImgs'
+ import catalogue from "../components/catalogue.vue"
  export default{
    data(){
      return{
        readIndex : 0,
        readUrls : [],
        loading : false,
+			 catalogue_list: ["系统介绍","效果演示","在线测试"],
        files : [],
        upurls : [],
        resImgs : [],
@@ -167,29 +168,28 @@
       const reg = new RegExp('(?<=-).+(?=[0-9])')
       return text.match(reg)[0]
      },
-     getTitle(){//监听当前属于哪个标题
-       const titles = document.querySelectorAll(".catalog .title")
-       const dom = document.querySelector('.catalog .navs').children
-       console.log(titles)
-       let current = 0
-       for(let i=0;i<titles.length;i++){
-         const top = titles[i].getBoundingClientRect().top
-         if(top > -5){
-           current = i
-           break
-         }
-       }
-       for(let i=0;i<titles.length;i++)
-         dom[i].classList.remove('current')
-       dom[current].classList.add('current')
-     },
-   },
-   mounted() {
-     window.addEventListener("scroll",this.getTitle);
+		 to_pix2pix(url){
+			 global.color_img_url = url
+			 this.$router.push({name:"pix2pix"})
+		 },
+		 downLoadImg(url){
+			 fetch(url)
+			 .then(res => res.blob())
+			 .then(blob => {
+				 var a = document.createElement('a')
+				 var url = window.URL.createObjectURL(blob)
+				 var filename = `${+(new Date())}.png`
+				 a.href = url
+				 a.download = filename
+				 a.click()
+				 window.URL.revokeObjectURL(url)
+			 })
+		 }
    },
    components:{
      loading,
-     readImgs
+     readImgs,
+		 catalogue
    }
  }
 </script>
@@ -199,26 +199,9 @@
   width: 100vw;
   height: 100vh;
   position: relative;
-  padding-top: 80px;
+  padding-top: 50px;
   overflow-x: hidden;
   background-color: #FFFFFF;
-}
-
-.extract .catalog{
-  z-index: 9;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  min-height: 100vh;
-  padding: 90px 10px;
-  background-color: #FFFFFF;
-  border-right: var(--border1);
-  overflow: hidden;
-  transition: var(--transition-speed);
-}
-.extract .catalog h2{
-  color: var(--font-dark1);
 }
 
 .extract .right{
@@ -239,10 +222,11 @@
 }
 
 .extract .right .upfile{
-  box-shadow: var(--box-shadow1);
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
   padding: 5px 0;
   border-radius: 10px;
   position: relative;
+	overflow: hidden;
 }
 .extract .right .upfile .files{
   height: 200px;
@@ -278,18 +262,9 @@
   cursor: pointer;
 }
 .extract .right .upfile .btns .check .btn:hover{
-  border-color: var(--green1);
-  background-color: rgba(90,216,166,0.2);
-  color: var(--green2);
-  
-}
-.extract .right .upfile .btns .check input{
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 999;
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+  color: var(--blue);
 }
 
 .extract .right .resImg{
@@ -303,8 +278,8 @@
 }
 .extract .right .resImg .item{
   width: 100%;
-  cursor: pointer;
   position: relative;
+	overflow: hidden;
 }
 .extract .right .resImg .item .img{
   width: 100%;
@@ -321,14 +296,35 @@
   color: #FFFFFF;
   border-radius: 5px;
 }
-
-@media (max-width:900px) {
-  .extract .catalog{
-    left: -250px;
-  }
-  .extract .right{
-    width: 90%;
-    margin: 0 auto;
-  }
+.extract .right .resImg .item .mask{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 0;
+	background-color: rgba(0,0,0,0.2);
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	overflow: hidden;
+	transition: var(--hover-speed);
+}
+.extract .right .resImg .item:hover .mask{
+	height: 100%;
+}
+.extract .right .resImg .item .mask i{
+	flex-shrink: 0;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 2em;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.extract .right .resImg .item .mask i:hover{
+	background-color: rgba(0,0,0,0.3);
 }
 </style>

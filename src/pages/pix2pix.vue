@@ -8,14 +8,7 @@
      @closeRead="closeRead"
    >
    </readImgs>
-   <div class="catalog">
-     <h2>图像上色</h2>
-     <p><a href="#1">1. 系统介绍</a></p>
-     <p><a href="#2">2. 效果演示</a></p>
-     <p><a href="#3">3. 在线测试</a></p>
-     <p><a href="#4">4. 颜色推荐</a></p>
-     <p v-if="resImgs.length>0"><a href="#5">5. 画图源码</a></p>
-   </div>
+   <catalogue title="图片上色" :list="catalogue_list"></catalogue>
    <div class="right">
      <h1>图像上色</h1>
      
@@ -248,12 +241,14 @@
 import loading from '../components/loading'
 import readImgs from '../components/readImgs'
 import codeShow from '../components/codeShow.vue'
+import catalogue from "../components/catalogue.vue"
 export default{
   data(){
     return{
       readIndex : 0,
       readUrls : [],
       loading : false,
+			catalogue_list: ["系统介绍","效果演示","在线测试","颜色推荐"],
       files : [],
       upurls : [],
       resImgs : [],
@@ -282,6 +277,46 @@ export default{
     }
   },
   methods:{
+		urlToFile(url){
+			let image = new Image()
+			image.setAttribute("crossOrigin", "Anonymous")
+			image.src = url
+			image.onload = () => {
+			  let base64 = getBase64Image(image)
+			  //转换base64到file
+			  let file = btof(base64, "test")
+				this.files = [file]
+				this.upurls = [url]
+				this.$forceUpdate()
+				let a = document.createElement("a")
+				a.href = "#3"
+				a.click()
+				global.color_img_url = ""
+			}
+			function getBase64Image(img) {
+			  let canvas = document.createElement("canvas")
+			  canvas.width = img.width
+			  canvas.height = img.height
+			  let ctx = canvas.getContext("2d")
+			  ctx.drawImage(img, 0, 0, img.width, img.height)
+			  let ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase()
+			  let dataURL = canvas.toDataURL("image/" + ext)
+			  return dataURL
+			}
+			function btof(data, fileName) {
+			  const dataArr = data.split(",")
+			  const byteString = atob(dataArr[1])
+			  const options = {
+			    type: "image/jpeg",
+			    endings: "native"
+			  }
+			  const u8Arr = new Uint8Array(byteString.length)
+			  for (let i = 0; i < byteString.length; i++) {
+			    u8Arr[i] = byteString.charCodeAt(i)
+			  }
+			  return new File([u8Arr], fileName + ".png", options)
+			}
+		},
     checkImgs(e){
       if(e.target.files.length > 0){
         this.clearFiles()
@@ -543,8 +578,15 @@ export default{
   components:{
     loading,
     readImgs,
-    codeShow
-  }
+    codeShow,
+		catalogue
+  },
+	beforeRouteEnter(to,from,next) {
+		next(vm => {
+			if(global.color_img_url != "")
+				vm.urlToFile(global.color_img_url)
+		})
+	}
 }
 </script>
 
@@ -553,7 +595,7 @@ export default{
   width: 100vw;
   height: 100vh;
   position: relative;
-  padding-top: 80px;
+  padding-top: 50px;
   overflow-x: hidden;
   background-color: #FFFFFF;
 }
@@ -639,9 +681,9 @@ export default{
   cursor: pointer;
 }
 .pix2pix .right .upfile .btns .check .btn:hover{
-  border-color: var(--green1);
-  background-color: rgba(90,216,166,0.2);
-  color: var(--green2);
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+  color: var(--blue);
 }
 .pix2pix .right .upfile .btns .check input{
   position: absolute;
